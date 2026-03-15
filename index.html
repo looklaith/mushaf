@@ -3,13 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="مصحفي" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#5c3317" />
   <title>مصحفي</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="icon.png" />
-  <meta name="theme-color" content="#5c3317" />
   <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
-  <style>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+    /* ... all your CSS here ... */
+  </script>
+    <style>
+    
+  
+
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: "Amiri Quran", serif; background: #1a1a1a; color: #f5e6c8; display: flex; flex-direction: column; min-height: 100vh; transition: background 0.3s, color 0.3s; }
     body.light { background: #d6c9a8; color: #1a0a00; }
@@ -587,6 +603,8 @@
 
   currentPage=parseInt(localStorage.getItem("quranLastPage")||"1");
   loadSurahList(); loadPage(currentPage); renderBookmarks();
+  
+
 </script>
 </body>
 </html>

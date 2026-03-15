@@ -1,30 +1,28 @@
-
-const CACHE_NAME = "mushafi-v1";
-const FILES_TO_CACHE = [
-  "./index.html",
-  "./style.css",
-  "./manifest.json",
-  "./icon.png"
+const CACHE = "mushafi-v1";
+const FILES = [
+  "/index.html",
+  "/style.css",
+  "/script.js",
+  "/manifest.json",
+  "/icon.png"
 ];
 
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE))
+self.addEventListener("install", e => {
+  e.waitUntil(
+    caches.open(CACHE).then(c => c.addAll(FILES))
   );
-  self.skipWaiting();
 });
 
-self.addEventListener("activate", event => {
-  event.waitUntil(
+self.addEventListener("activate", e => {
+  e.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
     )
   );
-  self.clients.claim();
 });
 
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request).then(cached => cached || fetch(event.request))
+self.addEventListener("fetch", e => {
+  e.respondWith(
+    caches.match(e.request).then(r => r || fetch(e.request))
   );
 });
