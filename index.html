@@ -201,13 +201,13 @@
       <button class="mode-btn"        id="modeNight" onclick="setMode('night')">🕯️ ليلي</button>
     </div>
   </div>
-  <div style="display:flex;align-items:center;gap:8px">
+  <div class="control" id="pageInfo" style="display:none">
     <label>حجم الخط:</label>
     <button class="mode-btn" onclick="changeFont(-0.1)">A−</button>
     <span id="fontSizeLabel" style="font-family:Arial;font-size:0.8rem;color:#c8a96e">1.75</span>
     <button class="mode-btn" onclick="changeFont(0.1)">A+</button>
   </div>
-  <div style="display:flex;align-items:center;gap:8px">
+  <div class="control" id="pageInfo" style="display:none">
     <label>الترجمة:</label>
     <select id="langSelect" onchange="updateLang()">
       <option value="en.sahih">🇬🇧 English</option>
@@ -216,7 +216,7 @@
       <option value="tr.ates">🇹🇷 Türkçe</option>
     </select>
   </div>
-  <div style="display:flex;align-items:center;gap:8px">
+  <div class="control" id="pageInfo" style="display:none">
     <label>القارئ:</label>
     <select id="reciterSelect" onchange="updateReciter()">
       <option value="ar.alafasy">مشاري العفاسي</option>
