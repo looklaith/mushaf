@@ -790,7 +790,7 @@ async function loadPage(pageNum) {
   quranTextEl.innerHTML = '<div class="loading">جارٍ التحميل...</div>';
 
   try {
-    const res = await fetch(`https://api.alquran.cloud/v1/page/${currentPage}/quran-uthmani`);
+    const res = await fetch(`https://api.alquran.cloud/v1/page/${currentPage}/quran-simple`);
     const data = await res.json();
 
     if (data.status !== 'OK') throw new Error('Load failed');

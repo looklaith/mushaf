@@ -121,6 +121,7 @@ const JUZ_START_PAGES = [
   402, 422, 442, 462, 482, 502, 522, 542, 562, 582
 ];
 
+
 let currentPage = Number(localStorage.getItem('quran_lastPage') || 1);
 let currentSurah = 1;
 let fontSize = Number(localStorage.getItem('quran_fontSize') || 1.9);
@@ -233,7 +234,8 @@ async function loadPage(pageNum) {
   quranTextEl.innerHTML = '<div class="loading">جارٍ التحميل...</div>';
 
   try {
-    const res = await fetch(`https://api.alquran.cloud/v1/page/${currentPage}/quran-uthmani`);
+
+const res = await fetch(`https://api.alquran.cloud/v1/page/${currentPage}/quran-simple`);
     const data = await res.json();
 
     if (data.status !== 'OK') throw new Error('Load failed');
@@ -269,15 +271,29 @@ function highlightActiveSurah() {
 
 function changePage(dir) {
   const card = document.getElementById('quranCard');
-  if (card) {
-    card.classList.add('flipping');
-    setTimeout(() => {
-      loadPage(currentPage + dir);
-      card.classList.remove('flipping');
-    }, 180);
-  } else {
+  if (!card) { loadPage(currentPage + dir); return; }
+
+  // منع الضغط المتكرر أثناء الأنيميشن
+  if (card.dataset.flipping === '1') return;
+  card.dataset.flipping = '1';
+
+  // إضافة كلاس التقليب حسب الاتجاه
+  const flipClass = dir > 0 ? 'flip-next' : 'flip-prev';
+  card.classList.add(flipClass);
+
+  // بعد انتهاء الأنيميشن نحمّل الصفحة الجديدة
+  setTimeout(() => {
+    card.classList.remove(flipClass);
     loadPage(currentPage + dir);
-  }
+
+    // أنيميشن ظهور الصفحة الجديدة
+    const inClass = dir > 0 ? 'page-in-next' : 'page-in-prev';
+    card.classList.add(inClass);
+    setTimeout(() => {
+      card.classList.remove(inClass);
+      card.dataset.flipping = '0';
+    }, 350);
+  }, 400);
 }
 
 function jumpToPage() {

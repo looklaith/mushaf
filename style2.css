@@ -151,9 +151,20 @@ body {
   font-size: 0.95rem;
   font-family: inherit;
 }
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 150;
+}
+.sidebar-overlay.active {
+  display: block;
+}
 
-.surah-list {
-  list-style: none;
+.sidebar-overlay {
+  display: none;
+  position: fixed;
 }
 
 .surah-item {
@@ -439,9 +450,42 @@ body {
     top: 90px;
   }
 
-  .quran-card {
-    padding: 18px 14px 24px;
-  }
+  /* ===== تقليب الصفحات مثل المصحف ===== */
+.quran-card {
+  transform-origin: right center;
+}
+
+@keyframes flipToNext {
+  0%   { transform: perspective(1500px) rotateY(0deg); opacity: 1; }
+  50%  { transform: perspective(1500px) rotateY(-90deg) scaleX(0.5); opacity: 0.4; }
+  100% { transform: perspective(1500px) rotateY(-180deg); opacity: 0; }
+}
+@keyframes flipToPrev {
+  0%   { transform: perspective(1500px) rotateY(0deg); opacity: 1; }
+  50%  { transform: perspective(1500px) rotateY(90deg) scaleX(0.5); opacity: 0.4; }
+  100% { transform: perspective(1500px) rotateY(180deg); opacity: 0; }
+}
+@keyframes pageIn {
+  0%   { transform: perspective(1500px) rotateY(-20deg) scaleX(0.9); opacity: 0.4; }
+  100% { transform: perspective(1500px) rotateY(0deg) scaleX(1); opacity: 1; }
+}
+@keyframes pageInPrev {
+  0%   { transform: perspective(1500px) rotateY(20deg) scaleX(0.9); opacity: 0.4; }
+  100% { transform: perspective(1500px) rotateY(0deg) scaleX(1); opacity: 1; }
+}
+
+.quran-card.flip-next {
+  animation: flipToNext 0.4s ease-in forwards;
+}
+.quran-card.flip-prev {
+  animation: flipToPrev 0.4s ease-in forwards;
+}
+.quran-card.page-in-next {
+  animation: pageIn 0.35s ease-out forwards;
+}
+.quran-card.page-in-prev {
+  animation: pageInPrev 0.35s ease-out forwards;
+}
 
   .quran-text {
     line-height: 2.15;
@@ -456,4 +500,30 @@ body {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+/* إزالة الميم الزائدة (Uthmani small letters) */
+.quran-text::after,
+.quran-text::before,
+.ayah::after,
+.ayah::before,
+.quran-text > * {
+  font-variant-numeric: normal !important;
+}
+
+/* إخفاء الحروف الصغيرة تحت الكلمات العثمانية */
+.quran-text [style*="font-size:0.5"],
+.quran-text small,
+.quran-text sup,
+.quran-text sub {
+  display: none !important;
+  font-size: 0 !important;
+  opacity: 0 !important;
+  height: 0 !important;
+}
+
+/* بديل أفضل: استخدم font بدون علامات التجويد */
+.quran-text {
+  font-family: 'Amiri Quran', 'Scheherazade', 'Traditional Arabic', serif !important;
+  font-feature-settings: "cv01" 0, "ss01" 0; /* تعطيل Ligatures التجويدية */
+  text-rendering: optimizeLegibility;
 }
